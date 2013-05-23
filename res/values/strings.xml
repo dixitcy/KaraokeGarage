@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Testapp</string>
+    <string name="app_name">KandG</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="fbs">facebook</string>
-    <string name="textv">YOLO ! Font TesTing</string>
-    <string name="songname">song name</string>
-    <string name="albumname">album name</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+    <string name="body1">one</string>
+    <string name="body2">two</string>
+    <string name="body3">three</string>
+    <string name="label1">POPULAR</string>
+    <string name="label2">ALL SONGS</string>
+    <string name="label3">TRENDING</string>
+    <string name="servicemsg">My developer is so lazy :(</string>
 
 </resources>
