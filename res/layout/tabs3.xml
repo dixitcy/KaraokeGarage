@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tab1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/tabs3"
-    android:background="#fff" >
+    android:orientation="horizontal" 
+    android:gravity="center">
 
     <GridView
         android:id="@+id/gridview"
@@ -23,4 +24,4 @@
         android:verticalSpacing="6dp" >
     </GridView>
 
-</FrameLayout>
+</LinearLayout>

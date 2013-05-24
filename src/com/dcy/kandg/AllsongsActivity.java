@@ -1,10 +1,15 @@
 package com.dcy.kandg;
 
+import com.dcy.kandg.R.drawable;
+
+import android.R.color;
 import android.app.ActionBar;
-import android.app.ActionBar.Tab;
+import android.app.ActionBar.LayoutParams;
+
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.net.wifi.p2p.WifiP2pManager.ActionListener;
+import android.graphics.Color;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -13,17 +18,15 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 
 import android.view.LayoutInflater;
-import android.view.Menu;
 
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.TabHost.OnTabChangeListener;
+
 
 public class AllsongsActivity extends FragmentActivity implements
 		ActionBar.TabListener {
@@ -37,11 +40,13 @@ public class AllsongsActivity extends FragmentActivity implements
 	 * {@link android.support.v4.app.FragmentStatePagerAdapter}.
 	 */
 	SectionsPagerAdapter mSectionsPagerAdapter;
+	
 
 	/**
 	 * The {@link ViewPager} that will host the section contents.
 	 */
 	ViewPager mViewPager;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +61,13 @@ public class AllsongsActivity extends FragmentActivity implements
 		// Set up action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		actionBar.setDisplayShowTitleEnabled(true);
+		actionBar.setDisplayShowTitleEnabled(false);
 		actionBar.setDisplayShowHomeEnabled(true);
+		
+		
+		
+	
+	
 
 		// Specify that the Home button should show an "Up" caret, indicating
 		// that touching the
@@ -66,7 +76,9 @@ public class AllsongsActivity extends FragmentActivity implements
 
 		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);
+		
 		mViewPager.setAdapter(mSectionsPagerAdapter);
+		
 		mViewPager
 				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 					@Override
@@ -77,6 +89,9 @@ public class AllsongsActivity extends FragmentActivity implements
 						// we have a reference to the
 						// Tab.
 						actionBar.setSelectedNavigationItem(position);
+						
+						
+						
 					}
 				});
 		// For each of the sections in the app, add a tab to the action bar.
@@ -88,26 +103,31 @@ public class AllsongsActivity extends FragmentActivity implements
 			// listener for when this tab is selected.
 			actionBar.addTab(actionBar.newTab()
 					.setText(mSectionsPagerAdapter.getPageTitle(i))
+					
+					
+				
+
 					.setTabListener(this));
+					
 		}
 	}
 
 	@Override
-	public void onTabReselected(ActionBar.Tab tab,FragmentTransaction fragmentTransaction) {
-		// TODO Auto-generated method stub
+	public void onTabReselected(ActionBar.Tab tab,
+			FragmentTransaction fragmentTransaction) {
 
 	}
 
 	@Override
-	public void onTabSelected(ActionBar.Tab tab,FragmentTransaction fragmentTransaction) {
-		 mViewPager.setCurrentItem(tab.getPosition());
-		// TODO Auto-generated method stub
+	public void onTabSelected(ActionBar.Tab tab,
+			FragmentTransaction fragmentTransaction) {
+		mViewPager.setCurrentItem(tab.getPosition());
 
 	}
 
 	@Override
-	public void onTabUnselected(ActionBar.Tab tab,FragmentTransaction fragmentTransaction) {
-		// TODO Auto-generated method stub
+	public void onTabUnselected(ActionBar.Tab tab,
+			FragmentTransaction fragmentTransaction) {
 
 	}
 
@@ -115,7 +135,7 @@ public class AllsongsActivity extends FragmentActivity implements
 	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
 	 * one of the sections/tabs/pages.
 	 */
-	public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
+	public class SectionsPagerAdapter extends FragmentPagerAdapter {
 		final int NUM_ITEMS = 3; // number of tabs
 
 		public SectionsPagerAdapter(FragmentManager fm) {
@@ -210,7 +230,7 @@ public class AllsongsActivity extends FragmentActivity implements
 			View rootView = inflater.inflate(tabLayout, container, false);
 			GridView gridView = (GridView) rootView.findViewById(R.id.gridview);
 
-			gridView.setAdapter(new MYadapterexprmnt(rootView.getContext()));
+			gridView.setAdapter(new MYadapter(rootView.getContext()));
 			gridView.setOnItemClickListener(new OnItemClickListener() {
 
 				@Override
@@ -233,3 +253,5 @@ public class AllsongsActivity extends FragmentActivity implements
 	}
 
 }
+
+

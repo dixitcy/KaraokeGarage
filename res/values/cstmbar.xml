@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- the theme applied to the application or activity -->
+    <style name="CustomActivityTheme" parent="@android:style/Theme.Holo.Light">
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+       
+     
+        <item name="android:actionBarTabTextStyle" >@style/CustomTabTextStyle</item>
+        <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Kgishtyle</item>
+        
+      
+        <item name="android:background"  >@drawable/abclr</item>
+       
+    </style>
+
+    <!-- style for the action bar tab text -->
+    <style name="CustomTabTextStyle" >
+        <item name="android:textColor">#FF0000</item>
+        <item name="android:tabStripEnabled">false</item>
+        <item name="android:baselineAlignBottom">true</item>
+        <item name="android:alignmentMode">alignMargins</item>
+       
+      
+    </style>
+     <style name="MyActionBar" parent="@android:style/Widget.Holo.ActionBar">
+         <item name="android:tabStripEnabled">false</item>
+         <item name="android:tabStripLeft">@drawable/abclr</item>
+         <item name="android:tabStripRight">@drawable/abclr</item>
+         
+        <item name="android:background">@drawable/abclr</item>
+        <item name="android:backgroundStacked">@drawable/abclr</item>r
+        <item name="android:backgroundSplit">@drawable/abclr</item>
+    </style>
+    
+    
+    
+</resources>
