@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- File created by the Android Action Bar Style Generator
+<!--
+     File created by the Android Action Bar Style Generator
 
      Copyright (C) 2011 The Android Open Source Project
      Copyright (C) 2012 readyState Software Ltd
@@ -17,7 +18,7 @@
      limitations under the License.
 -->
 
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="Theme.Kgishtyle" parent="@android:style/Theme.Holo.Light">
         <item name="android:actionBarItemBackground">@drawable/selectable_background_kgishtyle</item>
@@ -29,8 +30,6 @@
         <item name="android:actionModeBackground">@drawable/cab_background_top_kgishtyle</item>
         <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_kgishtyle</item>
         <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Kgishtyle</item>
-        
-        
     </style>
 
     <style name="ActionBar.Solid.Kgishtyle" parent="@android:style/Widget.Holo.Light.ActionBar.Solid">
@@ -46,7 +45,7 @@
     </style>
 
     <style name="PopupMenu.Kgishtyle" parent="@android:style/Widget.Holo.Light.ListPopupWindow">
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_kgishtyle</item>	
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_kgishtyle</item>
     </style>
 
     <style name="DropDownListView.Kgishtyle" parent="@android:style/Widget.Holo.Light.ListView.DropDown">
@@ -62,11 +61,11 @@
         <item name="android:popupBackground">@drawable/menu_dropdown_panel_kgishtyle</item>
         <item name="android:dropDownSelector">@drawable/selectable_background_kgishtyle</item>
     </style>
-    
+
     <style name="ProgressBar.Kgishtyle" parent="@android:style/Widget.Holo.Light.ProgressBar.Horizontal">
         <item name="android:progressDrawable">@drawable/progress_horizontal_kgishtyle</item>
     </style>
-    
+
     <style name="ActionButton.CloseMode.Kgishtyle" parent="@android:style/Widget.Holo.Light.ActionButton.CloseMode">
         <item name="android:background">@drawable/btn_cab_done_kgishtyle</item>
     </style>

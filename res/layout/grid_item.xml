@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/container_dropshadow"
+    android:orientation="horizontal" >
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="fill_parent"
+        android:layout_marginTop="10dp"
+        android:layout_height="120dip"
+        android:adjustViewBounds="true"
+        android:background="#94D7EA"
+        android:contentDescription="@string/descr_image"
+        android:focusable="false"
+        android:focusableInTouchMode="false" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="32sp"
+        android:layout_marginTop="3dp"
+        android:background="#94D7EA"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/SONG_NAME"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#94D7EA"
+            android:maxLines="1"
+            android:paddingLeft="2dp"
+            android:textColor="#FFFFFF"
+            android:text="Blahblah"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/ALBUM_NAME"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:background="#94D7EA"
+            android:paddingBottom="1dp"
+            android:text="Ranjhnaa"
+            android:paddingLeft="2dp"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+</LinearLayout>

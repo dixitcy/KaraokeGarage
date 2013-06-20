@@ -19,24 +19,25 @@ public class MYadapterexprmnt extends BaseAdapter {
 	public MYadapterexprmnt(Context context) {
 		inflater = LayoutInflater.from(context);
 
-		items.add(new Item("", R.drawable.pic_1));
-		items.add(new Item("", R.drawable.pic_2));
-		items.add(new Item("", R.drawable.pic_3));
-		items.add(new Item("", R.drawable.pic_4));
-		items.add(new Item("", R.drawable.pic_5));
-		items.add(new Item("", R.drawable.pic_7));
-		items.add(new Item("", R.drawable.pic_1));
-		items.add(new Item("", R.drawable.pic_2));
-		items.add(new Item("", R.drawable.pic_3));
-		items.add(new Item("", R.drawable.pic_4));
-		items.add(new Item("", R.drawable.pic_5));
-		items.add(new Item("", R.drawable.pic_7));
-		items.add(new Item("", R.drawable.pic_1));
-		items.add(new Item("", R.drawable.pic_2));
-		items.add(new Item("", R.drawable.pic_3));
-		items.add(new Item("", R.drawable.pic_4));
-		items.add(new Item("", R.drawable.pic_5));
-		items.add(new Item("", R.drawable.pic_7));
+		items.add(new Item("Blah Blah", R.drawable.pic_1));
+		items.add(new Item("Blah Blah", R.drawable.pic_2));
+		items.add(new Item("Blah Blah", R.drawable.pic_3));
+		items.add(new Item("Blah Blah", R.drawable.pic_4));
+		items.add(new Item("Blah Blah", R.drawable.pic_5));
+		items.add(new Item("Blah Blah", R.drawable.pic_7));
+		items.add(new Item("Blah Blah", R.drawable.pic_1));
+		items.add(new Item("Blah Blah", R.drawable.pic_2));
+		items.add(new Item("Blah Blah", R.drawable.pic_3));
+		items.add(new Item("Blah Blah", R.drawable.pic_4));
+		items.add(new Item("Blah Blah", R.drawable.pic_5));
+		items.add(new Item("Blah Blah", R.drawable.pic_7));
+		items.add(new Item("Blah Blah", R.drawable.pic_1));
+		items.add(new Item("Blah Blah", R.drawable.pic_2));
+		items.add(new Item("Blah Blah", R.drawable.pic_3));
+		items.add(new Item("Blah Blah", R.drawable.pic_4));
+		items.add(new Item("Blah Blah", R.drawable.pic_5));
+		items.add(new Item("Blah Blah", R.drawable.pic_7));
+		
 	}
 
 	@Override

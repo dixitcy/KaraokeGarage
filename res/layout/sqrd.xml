@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
        
         android:layout_gravity="bottom"
-        android:background="#55000000"
+        android:background="#00000000"
         android:paddingBottom="15dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"

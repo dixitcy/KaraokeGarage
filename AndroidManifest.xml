@@ -8,13 +8,20 @@
         android:minSdkVersion="14"
         android:targetSdkVersion="17" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/android1371547893542"
         android:label="@string/app_name"
         android:theme="@style/CustomActivityTheme" >
         <activity
+       
             android:name="com.dcy.kandg.AllsongsActivity"
+            android:configChanges="keyboardHidden|orientation"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,7 +29,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-       <activity android:name="com.dcy.kandg.Imgact" ></activity>
+        <activity android:name=".AdapterActivity"></activity>
+        <activity android:name="com.dcy.kandg.PlayerViewActivity" >
+        </activity>
+        <activity android:name=".BaseActivity" >
+        </activity>
+        <activity android:name="com.dcy.kandg.ImageGridActivity" >
+        </activity>
     </application>
 
 </manifest>
