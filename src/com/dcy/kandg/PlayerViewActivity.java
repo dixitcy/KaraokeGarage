@@ -10,9 +10,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
-
 public class PlayerViewActivity extends YouTubeFailureAcitivty {
-	String youtube_id =null;
+	String youtube_id = null;
 	String songnamenow = null;
 	TextView tv;
 
@@ -21,14 +20,13 @@ public class PlayerViewActivity extends YouTubeFailureAcitivty {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.utubeplayer);
-		
-	
+
 		Intent ikill = getIntent();
-       youtube_id = ikill.getStringExtra("id");
-       songnamenow = ikill.getStringExtra("songer");
-       tv =(TextView) findViewById(R.id.songu);
-		 tv.setText(songnamenow);
-        Log.d("check youtube",">"+songnamenow);
+		youtube_id = ikill.getStringExtra("id");
+		songnamenow = ikill.getStringExtra("songer");
+		tv = (TextView) findViewById(R.id.songu);
+		tv.setText(songnamenow);
+		Log.d("check youtube", ">" + songnamenow);
 
 		YouTubePlayerView youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
 		youTubeView.initialize(DeveloperKey.DEVELOPER_KEY, this);
@@ -39,8 +37,7 @@ public class PlayerViewActivity extends YouTubeFailureAcitivty {
 			YouTubePlayer player, boolean wasRestored) {
 		if (!wasRestored) {
 			player.cueVideo(youtube_id);
-			 player.setPlayerStyle(PlayerStyle.CHROMELESS);
-			
+
 		}
 
 	}

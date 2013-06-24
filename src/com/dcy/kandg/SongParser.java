@@ -1,16 +1,19 @@
 package com.dcy.kandg;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Vector;
+import android.content.Context;
+import android.content.res.AssetManager;
+
 import org.apache.commons.io.FileUtils;
 
-
-import android.app.Activity;
-import android.os.Bundle;
 import android.util.Log;
 
-public class SongParser extends Activity {
+public class SongParser {
 	public String[] m_lines;
 	public Song m_song;
 	public int m_linenum;
@@ -22,18 +25,48 @@ public class SongParser extends Activity {
 	public int m_relativeShift;
 	public double m_maxScore;
 	public int m_tsEnd; /* The ending ts of the song */
+	public String txtr;
+	Context mContext;
 
 	public Vector<BPM> m_bpms = new Vector<BPM>();
 	private static final String TAG = "KARAOKE_ENGINE";
-	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		super.onCreate(savedInstanceState);
-		
+
+	// Convert InputStream to String. Here we get the InputStream String from
+	// which we get he Lyrics and other information.
+	private static String getStringFromInputStream(InputStream is) {
+
+		BufferedReader br = null;
+		StringBuilder sb = new StringBuilder();
+
+		String line;
+		try {
+
+			br = new BufferedReader(new InputStreamReader(is));
+			while ((line = br.readLine()) != null) {
+				sb.append(line);
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+		return sb.toString();
+
 	}
 
+	// ///////////////////////////////////// INPUTSTREAM STRING
+	// ///////////////////////////////////////////////////
+
 	private void lyricsFileLoaded(String txt) throws KaraokeEvent {
+
 		Log.d(TAG, "Loading lyrics text file::::::::::::::::::::::::::::");
 		// var txt:String = event.target.data;
 		// trace(txt);
@@ -45,15 +78,24 @@ public class SongParser extends Activity {
 
 		Log.d(TAG, "Splitting lyrics:::::::::::::::::::::::::::::::::::");
 		m_lines = txt.split("\n");
+		System.out.println(m_lines);
 
 		// txtParseHeader();
 		txtParse();
 		finalize(); /* Do some adjusting to the notes */
 
 		Log.d(TAG, "Parse Complete:::::::::::::::::::::::::::::::::::");
+
 		m_song.print();
 
-		m_song.loadStatus = Song.LOAD_STATUS_FULL;
+		try {
+			m_song.loadStatus = Song.LOAD_STATUS_FULL;
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	private String getline() {
@@ -71,23 +113,22 @@ public class SongParser extends Activity {
 		m_song = s;
 		m_relative = false;
 		m_gap = 0;
-		m_bpm = 0;
+		m_bpm = 0.0;
 		m_prevtime = 0;
 		m_prevts = 0;
 		m_relativeShift = 0;
 		m_maxScore = 0;
 		m_tsEnd = 0;
 
-		try {
-			File file = new File(s.fileName);
-			String fileContent = FileUtils.readFileToString(file, null);
-			// Log.d(TAG, fileContent);
-			lyricsFileLoaded(fileContent);
-		} catch (IOException e) {
-			Log.e(TAG, "Lyrics File load fail " + s.fileName);
-			e.printStackTrace();
-			throw (new KaraokeEvent(KaraokeEvent.NO_LYRICS_FILE));
-		}
+		// File file = new File(s.fileName);
+		// System.out.print(s.fileName);
+
+		// String fileContent = FileUtils.readFileToString(file, "UTF_8");
+		// Log.d(TAG, fileContent);
+
+		String fileContent = s.fileName;
+		lyricsFileLoaded(fileContent);
+
 	}
 
 	public boolean txtCheck(String lyricsFile) {
@@ -138,12 +179,15 @@ public class SongParser extends Activity {
 		/* Parse notes */
 		while (null != line) {
 			result = txtParseNote(line, vocal);
+			Log.d(TAG, "WORKING");
 			if (false == result) {
 				Log.d(TAG, "Parse Note failed or Complete " + line);
 				break;
+
 			}
 
 			line = getline();
+
 		}
 
 		Log.d(TAG, "Parsing notes complete");
@@ -160,7 +204,7 @@ public class SongParser extends Activity {
 			vocal.notes.remove(vocal.notes.size() - 1);
 		}
 
-		m_song.insertVocalTrack(Song.LEAD_VOCAL, vocal);
+		// m_song.insertVocalTrack(Song.LEAD_VOCAL, vocal);
 	}
 
 	/* header parsing */
@@ -205,8 +249,13 @@ public class SongParser extends Activity {
 		return true;
 	}
 
+	String myString = "#";
+	String[] myStringArray = new String[300];
+	int k = 0;
+
 	/* parse body */
 	public boolean txtParseNote(String line, VocalTrack vocal) {
+
 		Log.d(TAG, "Parser: Parsing note for line -" + line);
 
 		if ((line.length() == 0) || (line == "\r")) {
@@ -295,11 +344,15 @@ public class SongParser extends Activity {
 			 */
 			if (values.length > 5) {
 				n.syllable = " " + values[5];
+
 			} else if (values.length > 4) {
 				n.syllable = values[4];
+				// Log.d("MY TAG", values[4]);
+
 			}
 
 			n.end = tsTime(ts + length);
+
 			break;
 		}
 
@@ -342,7 +395,7 @@ public class SongParser extends Activity {
 		// trace("Calculated begin and end times :: " + n.begin + " " + n.end);
 
 		if (n.begin < m_prevtime) {
-			Log.e(TAG, "ERROR!!!!!!!!!!!!BROKED FILE::Begin" + n.begin
+			Log.e(TAG, "ERROR!!!!!!!!!!!!BROKEN FILE::Begin" + n.begin
 					+ " PrevTime" + m_prevtime);
 
 			/*
@@ -409,7 +462,19 @@ public class SongParser extends Activity {
 			Log.d(TAG, "Normailizing Notesssss " + n.end);
 		}
 
+		if (n.syllable == "") {
+			myString = myString + "\n";
+		} else {
+			myString = myString + " " + n.syllable + " ";
+		}
+		myStringArray[k] = myString;
+		Log.d("CHECK THIS", myString);
+		Log.d("CHECK ARRAY", myStringArray[k]);
+
+		k = k + 1;
+
 		notes.add(n);
+
 		return true;
 	}
 
@@ -508,4 +573,5 @@ public class SongParser extends Activity {
 
 		return result;
 	}
+
 };

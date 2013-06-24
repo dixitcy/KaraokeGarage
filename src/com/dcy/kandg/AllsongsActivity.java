@@ -165,13 +165,7 @@ public class AllsongsActivity extends FragmentActivity implements
 
 	class LoadAlbums extends AsyncTask<String, String, String> {
 
-		/*
-		 * @Override protected void onPreExecute() { super.onPreExecute();
-		 * pDialog = new ProgressDialog(HomeActivity.this);
-		 * pDialog.setMessage("Getting Albums ...");
-		 * pDialog.setIndeterminate(false); pDialog.setCancelable(false);
-		 * pDialog.show(); }
-		 */
+		
 
 		@Override
 		protected void onPreExecute() {

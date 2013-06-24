@@ -1,6 +1,7 @@
 package com.dcy.kandg;
 
 import java.util.Vector;
+import com.dcy.kandg.Note;
 
 public class VocalTrack 
 {
