@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#BCDBDC" >
+
+    
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="230px"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="20sp"
+        android:layout_marginLeft="20dp"
+        android:background="@drawable/mylayer"
+        android:clipChildren="true"
+        android:gravity="center_vertical" >
+
+        <com.google.android.youtube.player.YouTubePlayerView
+            android:id="@+id/youtube_view"
+            android:layout_width="200px"
+            android:layout_height="200px"
+            android:layout_marginLeft="20sp"
+            android:layout_alignParentBottom="true"
+            >
+        </com.google.android.youtube.player.YouTubePlayerView>
+
+        <TextView
+            android:id="@+id/songu"
+            android:layout_width="120dp"
+            android:background="#FFFFFF"
+            android:layout_height="35dp"
+            android:layout_alignTop="@+id/youtube_view"
+            android:layout_marginLeft="17dp"
+            android:layout_marginTop="21dp"
+            android:layout_toRightOf="@+id/youtube_view"
+            android:textColor="#3EC1EA" 
+            android:paddingLeft="2dp"
+            />
+
+    </RelativeLayout>
+
+</RelativeLayout>
