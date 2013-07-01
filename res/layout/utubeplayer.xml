@@ -4,43 +4,68 @@
     android:layout_height="match_parent"
     android:background="#BCDBDC" >
 
-    
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/RelativeLayout1"
+        android:layout_alignLeft="@+id/RelativeLayout1"
+        android:layout_alignRight="@+id/RelativeLayout1"
+        android:layout_marginTop="20dp" >
+
+        <TextView
+            android:id="@+id/mylyricer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:textSize="15sp" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/RelativeLayout1"
         android:layout_width="match_parent"
-        android:layout_height="230px"
+        android:layout_height="110dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_marginBottom="20dp"
-        android:layout_marginRight="20sp"
         android:layout_marginLeft="20dp"
-        android:background="@drawable/mylayer"
-        android:clipChildren="true"
-        android:gravity="center_vertical" >
+        android:layout_marginRight="20sp"
+        android:background="#383D40"
+        android:clipChildren="true" >
 
         <com.google.android.youtube.player.YouTubePlayerView
             android:id="@+id/youtube_view"
-            android:layout_width="200px"
-            android:layout_height="200px"
-            android:layout_marginLeft="20sp"
+            android:layout_width="200dp"
+            android:layout_height="110dp"
             android:layout_alignParentBottom="true"
-            >
+            android:layout_alignParentLeft="true" >
         </com.google.android.youtube.player.YouTubePlayerView>
 
         <TextView
             android:id="@+id/songu"
             android:layout_width="120dp"
-            android:background="#FFFFFF"
             android:layout_height="35dp"
             android:layout_alignTop="@+id/youtube_view"
             android:layout_marginLeft="17dp"
             android:layout_marginTop="21dp"
             android:layout_toRightOf="@+id/youtube_view"
-            android:textColor="#3EC1EA" 
+            android:background="#383D40"
             android:paddingLeft="2dp"
-            />
+            android:textColor="#FFFFFF" />
 
+        <RelativeLayout
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:background="#F52323" >
+
+            <TextView
+                android:id="@+id/utubetime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFFFF" />
+        </RelativeLayout>
     </RelativeLayout>
 
 </RelativeLayout>

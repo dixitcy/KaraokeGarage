@@ -227,7 +227,7 @@ public class SongParser {
 		}
 
 		String key = line.substring(1, pos).trim();
-		String value = line.substring(pos + 1, line.length() - 1).trim();
+		String value = line.substring(pos + 1, line.length()).trim();
 
 		Log.d(TAG, "Header Found :: Key =  " + key + " Value = " + value
 				+ " Pos = " + pos);
@@ -467,9 +467,9 @@ public class SongParser {
 		} else {
 			myString = myString + " " + n.syllable + " ";
 		}
-		myStringArray[k] = myString;
+	//	myStringArray[k] = myString;
 		Log.d("CHECK THIS", myString);
-		Log.d("CHECK ARRAY", myStringArray[k]);
+	//	Log.d("CHECK ARRAY", myStringArray[k]);
 
 		k = k + 1;
 

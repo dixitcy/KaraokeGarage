@@ -9,10 +9,10 @@
     <string name="body1">one</string>
     <string name="body2">two</string>
     <string name="body3">three</string>
-    <string name="label1">POPULAR</string>
-    <string name="label2">ALL SONGS</string>
+    <string name="label1">CHOICE</string>
+    <string name="label2">KARAOKE GARAGE</string>
     <string name="label3">TRENDING</string>
-      <string name="ac_name_image_list">Image List Example</string>
+    <string name="ac_name_image_list">Image List Example</string>
     <string name="ac_name_image_grid">Image Grid Example</string>
     <string name="ac_name_image_pager">Image Pager Example</string>
     <string name="ac_name_image_gallery">Image Gallery Example</string>
@@ -29,7 +29,6 @@
     <!-- Content descriptions -->
     <string name="descr_image">Image</string>
     <string name="servicemsg">My developer is so lazy :(</string>
-      <string name="youtube_api_demo">YouTube API Demos</string>
+    <string name="youtube_api_demo">YouTube API Demos</string>
 
- 
- </resources>
+</resources>

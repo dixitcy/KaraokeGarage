@@ -1,6 +1,8 @@
 package com.dcy.kandg;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -22,11 +24,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
-
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -39,36 +36,44 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-
 import android.support.v4.view.ViewPager;
-
 import android.util.Log;
 import android.view.LayoutInflater;
-
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
-
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
+
+import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
+import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.utils.L;
+import com.nostra13.universalimageloader.utils.StorageUtils;
+
+////////////////////////////////     ALLSONGS ACTIVITY   ////////////////////
 
 public class AllsongsActivity extends FragmentActivity implements
 		ActionBar.TabListener {
 
+	// //////////////////////////////// GLOBAL DECLARATIONS ////////////////////
+
 	static ImageLoader imageLoader;
 	static DisplayImageOptions options;
 
-	public int k;
-	Bitmap bmImg;
+	public static int k;
+
 	ImageView imageView;
 
-	public String url = "http://karaokegarage.com/songs/allsongs.json/?category=new";
+	public static String url = "http://karaokegarage.com/songs/allsongs.json/?category=new";
 
 	// JSON Node names
 	private static final String TAG_SONGS = "songs";
@@ -81,20 +86,22 @@ public class AllsongsActivity extends FragmentActivity implements
 	private static final String TAG_UTUBE_ID = "youtube_id";
 	private static final String TAG_IMG_URL = "img_url";
 	final static String imgloc = "";
+	TabHost tab_host;
 
-	ArrayList<HashMap<String, String>> contactList;
+	static ArrayList<HashMap<String, String>> contactList;
 
 	JSONObject song;
 	ListView listview;
-	WebView webView;
-
-	String[] imgs = new String[250];
-	String[] utubeid = new String[250];
-	String[] albumid = new String[250];
-	String[] songname = new String[250];
+	private ViewSwitcher switcher;
+	static String[] imgs = new String[250];
+	static String[] utubeid = new String[250];
+	static String[] albumid = new String[250];
+	static String[] songname = new String[250];
+	static String[] lyricsid = new String[250];
 	Context mContext;
+	int i, j;
 
-	String[] myStringArray = new String[250];
+	static String[] myStringArray = new String[250];
 
 	private static final String TEST_FILE_NAME = "Universal Image Loader @#&=+-_.,!()~'%20.png";
 
@@ -102,18 +109,18 @@ public class AllsongsActivity extends FragmentActivity implements
 
 	ViewPager mViewPager;
 
-	private ActionBar mActionBar;
-	private LayoutInflater mInflater;
-	private View mCustomView;
-	private TextView mTitleTextView;
+	// ///////////////////// ON CREATE /////////////////////////
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_allsongs);
+
+		File testImageOnSdCard = new File("/mnt/sdcard", TEST_FILE_NAME);
+		if (!testImageOnSdCard.exists()) {
+			copyTestImageToSdCard(testImageOnSdCard);
+		}
 
 		contactList = new ArrayList<HashMap<String, String>>();
-		new LoadAlbums().execute();
 
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
@@ -129,7 +136,11 @@ public class AllsongsActivity extends FragmentActivity implements
 		actionBar.getDisplayOptions();
 
 		// Set up the ViewPager with the sections adapter.
-		mViewPager = (ViewPager) findViewById(R.id.pager);
+
+		mViewPager = new ViewPager(this);
+		mViewPager.setId(R.id.pager);
+
+		setContentView(mViewPager);
 
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 
@@ -146,110 +157,62 @@ public class AllsongsActivity extends FragmentActivity implements
 
 					}
 				});
+
 		// For each of the sections in the app, add a tab to the action bar.
-		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
+		for (int i = 0; i < 3; i++) {
 			// Create a tab with text corresponding to the page title defined by
 			// the adapter.
 			// Also specify this Activity object, which implements the
 			// TabListener interface, as the
 			// listener for when this tab is selected.
 			actionBar.addTab(actionBar.newTab()
-					.setText(mSectionsPagerAdapter.getPageTitle(i))
 
-					.setTabListener(this));
+			.setText(mSectionsPagerAdapter.getPageTitle(i))
+
+			.setTabListener(this));
 
 		}
+
 	}
 
-	// /////////////////// LOAD ALBUMS ////////////////////////
+	// ///////////////////// ON CREATE END /////////////////////////
 
-	class LoadAlbums extends AsyncTask<String, String, String> {
+	// ///////////////////////// LOAD ALBUMS /////////////////////
 
-		
+	// //////////////////////////////// LOAD ALBUMS END
+	// /////////////////////////////////
 
-		@Override
-		protected void onPreExecute() {
+	// ////////////////////////////////////// COPYING IMAGES TO SD CARD
+	// //////////////////////////////////
 
-			super.onPreExecute();
-
-		}
-
-		protected String doInBackground(String... args) {
-
-			List<NameValuePair> params = new ArrayList<NameValuePair>();
-
-			// getting JSON string from URL
-			String json = JSONParser.makeHttpRequest(url, "GET", params);
-
-			// Check your log cat for JSON response
-			Log.d("Albums JSON: ", "> " + json);
-
-			try {
-				JSONObject first = new JSONObject(json);
-
-				JSONArray song = first.getJSONArray(TAG_SONGS);
-
-				if (song != null) {
-					// looping through All albums
-					for (int i = 0; i < song.length(); i++) {
-						k = song.length();
-						Log.d("LENGTH", ">" + k);
-						JSONObject c = song.getJSONObject(i);
-
-						// Storing each json item values in variable
-						String id = c.getString(TAG_ID);
-						String album = c.getString(TAG_ALBUM);
-						String singer = c.getString(TAG_SINGER);
-						String youtube_id = c.getString(TAG_UTUBE_ID);
-						String img_url = c.getString(TAG_IMG_URL);
-						String title = c.getString(TAG_TITLE);
-
-						myStringArray[i] = "https://s3-ap-southeast-1.amazonaws.com/kgassets/posters/"
-								+ img_url;
-						Log.d("STRING CHECK", myStringArray[i]);
-						imgs[i] = album;
-
-						utubeid[i] = youtube_id;
-						albumid[i] = id;
-						songname[i] = title;
-
-						// creating new HashMap
-						HashMap<String, String> map = new HashMap<String, String>();
-
-						// adding each child node to HashMap key => value
-						map.put(TAG_ID, id);
-						map.put(TAG_ALBUM, album);
-						map.put(TAG_SINGER, singer);
-						map.put(TAG_IMG_URL, img_url);
-						map.put(TAG_UTUBE_ID, youtube_id);
-						map.put(TAG_TITLE, title);
-
-						// adding HashList to ArrayList
-						contactList.add(map);
-						Log.d("check TAGALBUM", album);
-
+	private void copyTestImageToSdCard(final File testImageOnSdCard) {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					InputStream is = getAssets().open(TEST_FILE_NAME);
+					FileOutputStream fos = new FileOutputStream(
+							testImageOnSdCard);
+					byte[] buffer = new byte[8192];
+					int read;
+					try {
+						while ((read = is.read(buffer)) != -1) {
+							fos.write(buffer, 0, read);
+						}
+					} finally {
+						fos.flush();
+						fos.close();
+						is.close();
 					}
-				} else {
-					Log.d("songs: ", "null");
+				} catch (IOException e) {
+					L.w("Can't copy test image onto SD card");
 				}
 			}
-
-			catch (JSONException e) {
-				e.printStackTrace();
-			}
-
-			return null;
-
-		}
-
-		@Override
-		protected void onPostExecute(String result) {
-
-			super.onPostExecute(result);
-
-		}
-
+		}).start();
 	}
+
+	// /////////////////////////////////////// COPYING IMAGES TO SD CARD END
+	// /////////////////////////////////
 
 	// ////////// JSON PARSER //////////////
 
@@ -328,6 +291,9 @@ public class AllsongsActivity extends FragmentActivity implements
 		}
 	}
 
+	// /////////////////////////////////////// JSON PARSER END
+	// //////////////////////////////////////////////////
+
 	@Override
 	public void onTabReselected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
@@ -356,21 +322,14 @@ public class AllsongsActivity extends FragmentActivity implements
 
 		@Override
 		public Fragment getItem(int i) {
-			// getItem is called to instantiate the fragment for the given page.
-			// Return a DummySectionFragment (defined as a static inner class
-			// below) with the page number as its lone argument.
-			// Fragment fragment = new DummySectionFragment();
-			// Bundle args = new Bundle();
-			// args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position +
-			// 1);
-			// fragment.setArguments(args);
-			// return fragment;
+
 			Fragment fragment = new TabFragment();
 			Bundle args = new Bundle();
 			args.putStringArray("chaching", myStringArray);
 			args.putStringArray("bling", songname);
+			args.putStringArray("chinger", lyricsid);
 			args.putStringArray("youtube_id", utubeid);
-			args.putInt(TabFragment.ARG_OBJECT, i);
+			args.putInt("object", i);
 			fragment.setArguments(args);
 			return fragment;
 		}
@@ -391,6 +350,7 @@ public class AllsongsActivity extends FragmentActivity implements
 		public CharSequence getPageTitle(int position) {
 
 			String tabLabel = null;
+
 			switch (position) {
 			case 0:
 				tabLabel = getString(R.string.label1);
@@ -412,13 +372,66 @@ public class AllsongsActivity extends FragmentActivity implements
 	// //////////////////////////////////
 
 	public static class TabFragment extends Fragment {
+
 		String[] imageUrls;
 		String[] tagalb;
 		String[] tagutube;
 		String[] tagtitle;
+		String[] taglyric;
+		String[] tagcategory = { "telugu", "tamil", "kannada", "new",
+				"english", "hindi" };
 		String Kgtit;
+		int tabLayout;
+		int positions;
 
 		public static final String ARG_OBJECT = "object";
+
+		public class ImageAdapter extends BaseAdapter {
+			private Context mContext;
+
+			public ImageAdapter(Context c) {
+				mContext = c;
+			}
+
+			public int getCount() {
+				return mThumbIds.length;
+			}
+
+			public Object getItem(int position) {
+				return null;
+			}
+
+			public long getItemId(int position) {
+				return 0;
+			}
+
+			// create a new ImageView for each item referenced by the Adapter
+			public View getView(int position, View convertView, ViewGroup parent) {
+				ImageView imageView;
+				if (convertView == null) { // if it's not recycled, initialize
+											// some attributes
+					imageView = new ImageView(mContext);
+					imageView.setLayoutParams(new GridView.LayoutParams(450,
+							300));
+
+					imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+					imageView.setPadding(0, 0, 0, 0);
+				} else {
+					imageView = (ImageView) convertView;
+				}
+
+				imageView.setImageResource(mThumbIds[position]);
+				return imageView;
+			}
+
+			// references to our images
+			private Integer[] mThumbIds = { R.drawable.ic_launcher,
+					R.drawable.ic_launcher, R.drawable.ic_launcher,
+					R.drawable.ic_launcher, R.drawable.ic_launcher,
+					R.drawable.ic_launcher
+
+			};
+		}
 
 		public class Imgadapter extends BaseAdapter {
 
@@ -437,23 +450,40 @@ public class AllsongsActivity extends FragmentActivity implements
 
 					tagtitle = args.getStringArray("bling");
 
+					taglyric = args.getStringArray("chinger");
+
 					imageUrls = args.getStringArray("chaching");
 
 				}
 
 				if (imageLoader == null) {
 
+					File cacheDir = StorageUtils.getOwnCacheDirectory(
+							getActivity(), "/mnt/sdcard");
+
+					// Get singletone instance of ImageLoader
 					imageLoader = ImageLoader.getInstance();
+					// Create configuration for ImageLoader (all options are
+					// optional)
+					ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+							context)
+							// You can pass your own memory cache implementation
+							.discCache(new UnlimitedDiscCache(cacheDir))
+							// You can pass your own disc cache implementation
+							.discCacheFileNameGenerator(
+									new HashCodeFileNameGenerator())
+							.enableLogging().build();
+					imageLoader.init(config);
 
 					options = new DisplayImageOptions.Builder()
 							.showStubImage(R.drawable.i3l69yvi)
 							.showImageForEmptyUri(R.drawable.i3l69yvi)
 							.showImageOnFail(R.drawable.i3l69yvi)
 							.cacheInMemory().cacheOnDisc()
-							.displayer(new RoundedBitmapDisplayer(10))
+							// .displayer(new RoundedBitmapDisplayer(10))
 							.bitmapConfig(Bitmap.Config.RGB_565).build();
-					imageLoader.init(ImageLoaderConfiguration
-							.createDefault(mContext));
+					// imageLoader.init(ImageLoaderConfiguration
+					// .createDefault(mContext));
 
 				}
 
@@ -482,7 +512,7 @@ public class AllsongsActivity extends FragmentActivity implements
 
 			@Override
 			public View getView(int position, View convertView, ViewGroup parent) {
-				// final Imfinal ImageView imageView;
+
 				View view = convertView;
 
 				final ViewHolder holder;
@@ -490,10 +520,7 @@ public class AllsongsActivity extends FragmentActivity implements
 					view = inflater.inflate(R.layout.grid_item, parent, false);
 					holder = new ViewHolder();
 					holder.text1 = (TextView) view.findViewById(R.id.SONG_NAME);
-					// Typeface typeFace =
-					// Typeface.createFromAsset(getActivity()
-					// .getAssets(), "Quicksand_Bold.otf");
-					// holder.text1.setTypeface(typeFace);
+
 					holder.image = (ImageView) view.findViewById(R.id.image);
 					holder.text1.setText(tagtitle[position]);
 
@@ -505,13 +532,62 @@ public class AllsongsActivity extends FragmentActivity implements
 				}
 
 				holder.text1.setText(tagtitle[position]);
-				imageLoader.displayImage(imageUrls[position], holder.image,
-						options);
-				Log.d("Check this out", ">" + imageUrls[5]);
+				if (imageUrls[position] != null) {
+
+					imageLoader.displayImage(imageUrls[position], holder.image,
+							options);
+					Log.d("Check this out", ">" + imageUrls[5]);
+				}
 				Log.d("And this", "?" + tagtitle[5]);
 
 				return view;
 			}
+
+		}
+
+		@Override
+		public void onActivityCreated(Bundle savedInstanceState) {
+
+			super.onActivityCreated(savedInstanceState);
+
+		}
+
+		@Override
+		public void onDestroyView() {
+			// TODO Auto-generated method stub
+			super.onDestroyView();
+			tagutube = null;
+			tagtitle = null;
+
+			taglyric = null;
+
+			imageUrls = null;
+
+		}
+
+		@Override
+		public void onDetach() {
+			// TODO Auto-generated method stub
+			super.onDetach();
+			tagutube = null;
+			tagtitle = null;
+
+			taglyric = null;
+
+			imageUrls = null;
+
+		}
+
+		@Override
+		public void onPause() {
+			// TODO Auto-generated method stub
+			super.onPause();
+			tagutube = null;
+			tagtitle = null;
+
+			taglyric = null;
+
+			imageUrls = null;
 
 		}
 
@@ -524,49 +600,233 @@ public class AllsongsActivity extends FragmentActivity implements
 
 			Bundle args = getArguments();
 			tagutube = args.getStringArray("youtube_id");
-			int position = args.getInt(ARG_OBJECT);
-			// imageUrls =args.getStringArray("chaching");
+			tagtitle = args.getStringArray("bling");
 
-			int tabLayout = 0;
-			switch (position) {
-			case 0:
-				tabLayout = R.layout.ac_image_grid;
-				break;
+			taglyric = args.getStringArray("chinger");
+
+			imageUrls = args.getStringArray("chaching");
+
+			positions = args.getInt("object");
+			if (positions == 2) {
+				new LoadAlbums().execute();
+			} else if (positions == 1) {
+				new LoadAlbums().execute();
+			}
+			Log.d("CHECK POSITION", ">" + positions);
+
+			tabLayout = 0;
+			switch (positions) {
 			case 1:
 				tabLayout = R.layout.ac_image_grid;
 				break;
 			case 2:
-				tabLayout = R.layout.ac_image_grid;
+				tabLayout = R.layout.tabs2;
+				break;
+			case 0:
+				tabLayout = R.layout.tabs1;
 				break;
 			}
 
 			View rootView = inflater.inflate(tabLayout, container, false);
 
-			GridView gridView = (GridView) rootView.findViewById(R.id.gridview);
+			if (positions == 0) {
+				GridView fridView = (GridView) rootView
+						.findViewById(R.id.buttonsgridview);
 
-			gridView.setAdapter(new Imgadapter(rootView.getContext()));
+				fridView.setAdapter(new ImageAdapter(rootView.getContext()));
 
-			gridView.setOnItemClickListener(new OnItemClickListener() {
+				fridView.setOnItemClickListener(new OnItemClickListener() {
 
-				@Override
-				public void onItemClick(AdapterView<?> parent, View v,
-						int position, long id) {
+					@Override
+					public void onItemClick(AdapterView<?> parent, View v,
+							int position, long id) {
 
-					// Sending image id to FullScreenActivity
-					Intent ikill = new Intent(getActivity().getBaseContext(),
-							PlayerViewActivity.class);
-					// passing array index
-					ikill.putExtra("id", tagutube[position]);
-					ikill.putExtra("songer", tagtitle[position]);
-					startActivity(ikill);
+						// Sending image id to FullScreenActivity
+						Intent ikillded = new Intent(getActivity()
+								.getBaseContext(), ImageGridActivity.class);
+						// passing array index
 
-				}
-			});
+						ikillded.putExtra("cat", tagcategory[position]);
+
+						startActivity(ikillded);
+
+					}
+				});
+
+			} else if (positions == 2) {
+
+				GridView gridView = (GridView) rootView
+						.findViewById(R.id.gridview);
+
+				gridView.setAdapter(new Imgadapter(rootView.getContext()));
+
+				gridView.setOnItemClickListener(new OnItemClickListener() {
+
+					@Override
+					public void onItemClick(AdapterView<?> parent, View v,
+							int position, long id) {
+
+						// Sending image id to FullScreenActivity
+						Intent ikill = new Intent(getActivity()
+								.getBaseContext(), PlayerViewActivity.class);
+						// passing array index
+						ikill.putExtra("id", tagutube[position]);
+						ikill.putExtra("songer", tagtitle[position]);
+						ikill.putExtra("lyricer", taglyric[position]);
+
+						startActivity(ikill);
+
+					}
+				});
+			} else if (positions == 1) {
+				GridView gridView = (GridView) rootView
+						.findViewById(R.id.gridview2);
+
+				gridView.setAdapter(new Imgadapter(rootView.getContext()));
+
+				gridView.setOnItemClickListener(new OnItemClickListener() {
+
+					@Override
+					public void onItemClick(AdapterView<?> parent, View v,
+							int position, long id) {
+
+						// Sending image id to FullScreenActivity
+						Intent ikill = new Intent(getActivity()
+								.getBaseContext(), PlayerViewActivity.class);
+						// passing array index
+						ikill.putExtra("id", tagutube[position]);
+						ikill.putExtra("songer", tagtitle[position]);
+						ikill.putExtra("lyricer", taglyric[position]);
+
+						startActivity(ikill);
+
+					}
+				});
+
+			}
 
 			return rootView;
 
 		}
 
+		class LoadAlbums extends AsyncTask<String, String, String> {
+
+			/*
+			 * @Override protected void onPreExecute() { super.onPreExecute();
+			 * pDialog = new ProgressDialog(HomeActivity.this);
+			 * pDialog.setMessage("Getting Albums ...");
+			 * pDialog.setIndeterminate(false); pDialog.setCancelable(false);
+			 * pDialog.show(); }
+			 */
+
+			@Override
+			protected void onPreExecute() {
+
+				super.onPreExecute();
+				if (positions == 2) {
+					url = "http://karaokegarage.com/songs/allsongs.json/?category=new";
+				} else if (positions == 1) {
+					url = "http://karaokegarage.com/songs/allsongs.json/?category=telugu";
+				}
+
+			}
+
+			protected String doInBackground(String... args) {
+
+				List<NameValuePair> params = new ArrayList<NameValuePair>();
+
+				// getting JSON string from URL
+				String json = JSONParser.makeHttpRequest(url, "GET", params);
+
+				// Check your log cat for JSON response
+				Log.d("Albums JSON: ", "> " + json);
+
+				try {
+					JSONObject first = new JSONObject(json);
+
+					JSONArray song = first.getJSONArray(TAG_SONGS);
+
+					if (song != null) {
+						// looping through All albums
+						for (int i = 0; i < song.length(); i++) {
+							k = song.length();
+							Log.d("LENGTH", ">" + k);
+							JSONObject c = song.getJSONObject(i);
+
+							// Storing each json item values in variable
+							String id = c.getString(TAG_ID);
+							String album = c.getString(TAG_ALBUM);
+							String singer = c.getString(TAG_SINGER);
+							String youtube_id = c.getString(TAG_UTUBE_ID);
+							String img_url = c.getString(TAG_IMG_URL);
+							String title = c.getString(TAG_TITLE);
+							String lyrics_url = c.getString(TAG_LYRICS_URL);
+
+							myStringArray[i] = "https://s3-ap-southeast-1.amazonaws.com/kgassets/posters/"
+									+ img_url;
+							Log.d("STRING CHECK", myStringArray[i]);
+							imgs[i] = album;
+
+							utubeid[i] = youtube_id;
+							albumid[i] = id;
+							songname[i] = title;
+							lyricsid[i] = lyrics_url;
+
+							// creating new HashMap
+							HashMap<String, String> map = new HashMap<String, String>();
+
+							// adding each child node to HashMap key => value
+							map.put(TAG_ID, id);
+							map.put(TAG_ALBUM, album);
+							map.put(TAG_SINGER, singer);
+							map.put(TAG_IMG_URL, img_url);
+							map.put(TAG_UTUBE_ID, youtube_id);
+							map.put(TAG_LYRICS_URL, lyrics_url);
+							map.put(TAG_TITLE, title);
+
+							// adding HashList to ArrayList
+							contactList.add(map);
+							Log.d("check TAGALBUM", album);
+
+						}
+					} else {
+						Log.d("songs: ", "null");
+					}
+				}
+
+				catch (JSONException e) {
+					e.printStackTrace();
+				}
+
+				return null;
+
+			}
+
+			@Override
+			protected void onPostExecute(String result) {
+
+				super.onPostExecute(result);
+				if (positions == 1) {
+
+					GridView gridView = (GridView) getActivity().findViewById(
+							R.id.gridview2);
+
+					gridView.setAdapter(new Imgadapter(getActivity()
+							.getBaseContext()));
+				} else if (positions == 2) {
+
+					GridView gridView = (GridView) getActivity().findViewById(
+							R.id.gridview);
+
+					gridView.setAdapter(new Imgadapter(getActivity()
+							.getBaseContext()));
+
+				}
+			}
+
+		}
+
 	}
 
+	// //////////////////////// TAB FRAGMENT END ///////////////////
 }

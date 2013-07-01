@@ -1,27 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/tab1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal" 
-    android:gravity="center">
+    android:background="#E0E2E8"
+    android:gravity="center" >
 
     <GridView
-        android:id="@+id/gridview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="0dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
+        android:id="@+id/buttonsgridview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_margin="20dp"
+        android:background="#E0E0E0"
         android:clickable="true"
-        android:columnWidth="120dp"
-        android:drawSelectorOnTop="true"
-        android:horizontalSpacing="6dp"
-        
-        android:numColumns="auto_fit"
+        android:drawSelectorOnTop="false"
+        android:gravity="center"
+        android:horizontalSpacing="0dp"
+        android:numColumns="3"
         android:stretchMode="columnWidth"
-        android:verticalSpacing="6dp" >
+        android:verticalSpacing="0dp" >
     </GridView>
 
-</LinearLayout>
+</RelativeLayout>

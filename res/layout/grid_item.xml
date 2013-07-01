@@ -2,16 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/container_dropshadow"
-    android:orientation="horizontal" >
+    android:background="@drawable/ds_1"
+    android:orientation="vertical" >
 
     <ImageView
         android:id="@+id/image"
         android:layout_width="fill_parent"
-        android:layout_marginTop="10dp"
         android:layout_height="120dip"
+        android:layout_marginTop="0dp"
         android:adjustViewBounds="true"
-        android:background="#94D7EA"
+        android:background="#FFFFFF"
         android:contentDescription="@string/descr_image"
         android:focusable="false"
         android:focusableInTouchMode="false" />
@@ -20,18 +20,18 @@
         android:layout_width="match_parent"
         android:layout_height="32sp"
         android:layout_marginTop="3dp"
-        android:background="#94D7EA"
-        android:orientation="horizontal" >
+        android:background="#FFFFFF"
+        android:orientation="vertical" >
 
         <TextView
             android:id="@+id/SONG_NAME"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="#94D7EA"
+            android:background="#FFFFFF"
             android:maxLines="1"
             android:paddingLeft="2dp"
-            android:textColor="#FFFFFF"
             android:text="Blahblah"
+            android:textColor="#606060"
             android:textSize="12sp"
             android:textStyle="bold" />
 
@@ -40,11 +40,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="bottom"
-            android:background="#94D7EA"
+            android:background="#FFFFFF"
             android:paddingBottom="1dp"
-            android:text="Ranjhnaa"
             android:paddingLeft="2dp"
-            android:textColor="#FFFFFF"
+            android:text="Ranjhnaa"
+            android:textColor="#A0A0A0"
             android:textSize="12sp" />
     </LinearLayout>
 

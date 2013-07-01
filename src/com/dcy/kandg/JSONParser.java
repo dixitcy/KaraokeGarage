@@ -25,7 +25,6 @@ public class JSONParser {
 	    static JSONObject jObj = null;
 	    static String json = "";
 	    
-	   
 	 
 	    // constructor
 	    public JSONParser() {
@@ -45,7 +44,9 @@ public class JSONParser {
 	                // request method is POST
 	                // defaultHttpClient
 	                DefaultHttpClient httpClient = new DefaultHttpClient();
+	               
 	                HttpPost httpPost = new HttpPost(url);
+	              //  Log.d("URL",url);
 	                httpPost.setEntity(new UrlEncodedFormEntity(params));
 	 
 	                HttpResponse httpResponse = httpClient.execute(httpPost);
@@ -55,8 +56,11 @@ public class JSONParser {
 	            } else if (method == "GET") {
 	                // request method is GET
 	                DefaultHttpClient httpClient = new DefaultHttpClient();
-	                String paramString = URLEncodedUtils.format(params, "utf-8");
-	                url += "?" + paramString;
+	                String paramString = URLEncodedUtils.format(params, "iso-8859-1");
+	                Log.d("ParamString",paramString);
+	                
+	              
+	                Log.d("URL",url);
 	                HttpGet httpGet = new HttpGet(url);
 	 
 	                HttpResponse httpResponse = httpClient.execute(httpGet);
@@ -76,12 +80,9 @@ public class JSONParser {
 	            BufferedReader reader = new BufferedReader(new InputStreamReader(
 	                    is, "iso-8859-1"), 8);
 	            StringBuilder sb = new StringBuilder();
-	            
-	           
 	            String line = null;
 	            while ((line = reader.readLine()) != null) {
 	                sb.append(line + "\n");
-	                Log.d("check string", ">"+ line);
 	            }
 	            is.close();
 	            json = sb.toString();
