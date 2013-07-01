@@ -6,8 +6,15 @@
 
     <ImageView
         android:id="@+id/full_image_view"
+        android:contentDescription="@string/body3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/corner" />
+        />
+    <TextView android:text="@string/servicemsg"
+        android:id="@+id/consview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="100sp" android:textColor="#FF0000"
+        android:lines="3" android:layout_gravity="center" />
 
 </LinearLayout>
